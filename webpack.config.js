@@ -8,7 +8,9 @@ const IS_DEV = process.env.NODE_ENV === 'development'
 
 const dirApp = path.join(__dirname, 'app')
 const dirAssets = path.join(__dirname, 'assets')
+const dirImages = path.join(__dirname, 'images')
 const dirStyles = path.join(__dirname, 'styles')
+const dirVideos = path.join(__dirname, 'videos')
 const dirNode = 'node_modules'
 
 module.exports = {
@@ -36,7 +38,48 @@ module.exports = {
                     to: ''
                 }
             ]
+        }),
+        new MiniCssExtractPlugin({
+            filename: '[name].css',
+            chunkFilename: '[id].css'
         })
+    ],
+
+    module: [
+        rules:[
+            {
+                test: /\.js$/,//verifie aue le fichier finie par js
+                use: {
+                    loader: 'babel-loader', // babel-loader est utilise poyur webpack aui compile les fichiers js
+
+                }
+            },
+            {
+                test: /\.scss$/,//verifie aue le fichier finie par scss
+                use:[
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options:{
+                            publicPath: ''
+                        }
+                    },
+                    {
+                        loader: 'css-loader',
+                    },
+                    {
+                        loader: 'postcss-loader', //ajoute les autoprefix sur les browser qui n'accepte pas encore nativement la feature
+                    },
+                    {
+                        loader: 'sass-loader', 
+                    },
+                ]
+            },
+//Ajouter la minification des image dans webpack
+            {
+                test:/\.(jpe?g|png|gif|svg|woff2?|fnt|webp)$/, 
+                loader: 'file'
+            }
+        ]
     ]
 }
 
