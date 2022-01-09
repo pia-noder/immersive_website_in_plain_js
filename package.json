@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack -p --progress --config webpack.config.build.js",
+    "build": "webpack --progress --config webpack.config.build.js",
     "development": "webpack-dev-server --progress --config webpack.config.development.js",
     "start": "npm run development"
   },
@@ -14,6 +14,7 @@
   },
   "author": "Pia-noder",
   "devDependencies": {
+    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^10.2.0",
     "mini-css-extract-plugin": "^2.4.6",
     "webpack": "^5.65.0",

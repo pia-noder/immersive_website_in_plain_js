@@ -29,8 +29,13 @@ module.exports = {
         new webpack.DefinePlugin({
             IS_DEV
         }),
-        new webpack.ProvidePlugin({
-
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: './assets',
+                    to: ''
+                }
+            ]
         })
     ]
 }
