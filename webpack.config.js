@@ -3,6 +3,7 @@ const webpack = require('webpack')
 //Plugin qui copie des fichiers d'un endroit à un autre  
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 //variable qui verifie depuis node.js la version qui est executée
 const IS_DEV = process.env.NODE_ENV === 'development'
 
@@ -40,7 +41,22 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '[name].css',
             chunkFilename: '[id].css'
-        })
+        }),
+        new ImageMinimizerPlugin({
+            minimizer: {
+              implementation: ImageMinimizerPlugin.imageminMinify,
+              options: {
+                // Lossless optimization with custom option
+                // Feel free to experiment with options for better result for you
+                plugins: [
+                  ["gifsicle", { interlaced: true }],
+                  ["jpegtran", { progressive: true }],
+                  ["optipng", { optimizationLevel: 5 }],
+                  // Svgo is pris en charge par                   ,
+                ],
+              },
+            },
+          }),
     ],
 
     module: {
@@ -80,7 +96,7 @@ module.exports = {
                 loader: 'file-loader',  
                 options: {
                     name(file){
-                        return '[hash].[ext]'
+                        return '[hash].[ext]'//utiliser un hash permet d'eviter que l'imager soit envoyer dans le cache
                     }
                 }
             }
