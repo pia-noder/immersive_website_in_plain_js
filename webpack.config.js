@@ -1,9 +1,12 @@
 const path = require('path') // Verifier le path de l'app
 const webpack = require('webpack')
 //Plugin qui copie des fichiers d'un endroit à un autre  
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");//minify js file more than what babel does
+
 //variable qui verifie depuis node.js la version qui est executée
 const IS_DEV = process.env.NODE_ENV === 'development'
 
@@ -57,6 +60,8 @@ module.exports = {
               },
             },
           }),
+        new CleanWebpackPlugin(),
+        
     ],
 
     module: {
@@ -64,14 +69,16 @@ module.exports = {
             {
                 test: /\.js$/,//verifie que le fichier finie par js
                 use: {
-                    loader: 'babel-loader', // babel-loader est utilise pour webpack aui compile les fichiers js
+                    //Un loader est un programme qui  permet à Webpack de pouvoir gérer un certain type de fichier.
+                    loader: 'babel-loader', // babel-loader est utilise pour webpack  compile les fichiers js
                     options: {
                         presets: ['@babel/preset-env']
                     }
                 }
             },
             {
-                test: /\.scss$/,//verifie aue le fichier finie par scss
+                test: /\.scss$/,//indique à Webpack que lorsqu’il rencontre un fichier de type scss il doit utiliser le loader sass
+                exclude: /node_modules/,
                 use:[
                     {
                         loader: MiniCssExtractPlugin.loader,
@@ -80,7 +87,7 @@ module.exports = {
                         }
                     },
                     {
-                        loader: 'css-loader',
+                        loader: 'css-loader', //necessaire car Webpack ne comprend pas nativement le css
                     },
                     {
                         loader: 'postcss-loader', //ajoute les autoprefix sur les browser qui n'accepte pas encore nativement la feature
@@ -96,12 +103,32 @@ module.exports = {
                 loader: 'file-loader',  
                 options: {
                     name(file){
-                        return '[hash].[ext]'//utiliser un hash permet d'eviter que l'imager soit envoyer dans le cache
+                        return '[hash].[ext]'//utiliser un hash permet d'eviter que l'image soit envoyer dans le cache
                     }
                 }
+            },
+            {
+                test: /\.(jpe?g|png|gif|svg|webp)$/i,
+                use: [
+                  {
+                    loader: ImageMinimizerPlugin.loader,
+                  },
+                ]
+            },
+            {
+                test:/\.(glsl|frag|vert)$/,
+                loader: 'raw-loader',
+                exclude: /node_modules/
+            },
+            {
+                test:/\.(glsl|frag|vert)$/,
+                loader: 'glslify-loader',
+                exclude: /node_modules/
             }
         ]
-    }
+    },
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin()],
+      },
 }
-
-console.log(dirApp, dirAssets, dirStyles)
