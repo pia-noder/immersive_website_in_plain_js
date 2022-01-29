@@ -8,9 +8,7 @@ const IS_DEV = process.env.NODE_ENV === 'development'
 
 const dirApp = path.join(__dirname, 'app')
 const dirAssets = path.join(__dirname, 'assets')
-const dirImages = path.join(__dirname, 'images')
 const dirStyles = path.join(__dirname, 'styles')
-const dirVideos = path.join(__dirname, 'videos')
 const dirNode = 'node_modules'
 
 module.exports = {
@@ -35,7 +33,7 @@ module.exports = {
             patterns: [
                 {
                     from: './assets',
-                    to: ''
+                    to: '' //no need to include any name here as every importnt folders path are already declared above 
                 }
             ]
         }),
@@ -45,13 +43,15 @@ module.exports = {
         })
     ],
 
-    module: [
+    module: {
         rules:[
             {
-                test: /\.js$/,//verifie aue le fichier finie par js
+                test: /\.js$/,//verifie que le fichier finie par js
                 use: {
-                    loader: 'babel-loader', // babel-loader est utilise poyur webpack aui compile les fichiers js
-
+                    loader: 'babel-loader', // babel-loader est utilise pour webpack aui compile les fichiers js
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
                 }
             },
             {
@@ -76,11 +76,16 @@ module.exports = {
             },
 //Ajouter la minification des image dans webpack
             {
-                test:/\.(jpe?g|png|gif|svg|woff2?|fnt|webp)$/, 
-                loader: 'file'
+                test:/\.(jpe?g|png|gif|svg|woff2?|fnt|webp)$/, //types de fichier acceptés
+                loader: 'file-loader',  
+                options: {
+                    name(file){
+                        return '[hash].[ext]'
+                    }
+                }
             }
         ]
-    ]
+    }
 }
 
 console.log(dirApp, dirAssets, dirStyles)

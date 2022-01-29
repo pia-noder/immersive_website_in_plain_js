@@ -1,1 +1,4 @@
-node_modules
+# Directories.
+log/
+node_modules/
+bower_components/
