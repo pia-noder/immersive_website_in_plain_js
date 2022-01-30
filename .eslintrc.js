@@ -1,10 +1,10 @@
 module.exports = {
     root: true,
     extends: ['standard'],
-    global: {
+    globals: {
         'IS_DEV': 'readonly'
     },
-    parseOptions: {
-        ecmasVersion: 2020
+    parserOptions: {
+        "ecmaVersion": "latest",
     }
 }
