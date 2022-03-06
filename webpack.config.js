@@ -77,6 +77,13 @@ module.exports = {
                 }
             },
             {
+                test: /\.pug/,
+                use: {
+                    //Un loader est un programme qui  permet à Webpack de pouvoir gérer un certain type de fichier.
+                    loader: 'pug-loader', // babel-loader est utilise pour webpack  compile les fichiers js
+                }
+            }
+            {
                 test: /\.scss$/,//indique à Webpack que lorsqu’il rencontre un fichier de type scss il doit utiliser le loader sass
                 exclude: /node_modules/,
                 use:[
