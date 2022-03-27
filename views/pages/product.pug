@@ -4,4 +4,26 @@ block variables
     - var template = 'product'
 
 block content
-    h1.about__title Product
+    .product
+        .product__wrapper 
+            figure.product__showcase 
+                img.product__showcase__media(alt=product.data.image.alt src=product.data.image.url)
+            .product__description
+                p.description__collection=product.data.collection.data.title
+                h1.description__title=product.data.title
+
+                .product__decription__content
+                    .description__description__highlights
+                        each highlight in product.data.highlights
+                            p.product__description__highlights 
+                                svg.product__description__icon
+                                    use(href=`sprite-${highlight.highlights_icons.toLowerCase()}`)
+
+                                |#{highlight.highlights_text}
+                              
+                    .description__description__informations
+                        each item in product.data.informations
+                            p.item__line  
+                                strong.item__info__label=item.informations_label
+                                span.item__info__description=item.informations_description
+                    a.product__description__link(href=product.data.link_url.url target='_blank')=product.data.link_text
