@@ -1,2 +1,2 @@
 //point d'entrée de l'app
-console.log('Hello World! index.js')
+console.log("Hello World! index.js");

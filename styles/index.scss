@@ -1,5 +1,15 @@
+//enter point for our scss
 $white: #000;
 
-.class{
-    color: $white;
+.class {
+  color: $white;
 }
+@import "./pages/about/about.scss";
+@import "./pages/about/content.scss";
+@import "./pages/about/gallery.scss";
+@import "./pages/about/highlight.scss";
+
+@import "./pages/collections.scss";
+
+@import "./pages/home.scss";
+@import "./pages/products/products.scss";
